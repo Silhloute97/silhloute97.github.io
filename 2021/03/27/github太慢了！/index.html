@@ -14,10 +14,12 @@
 
 
 <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-flash.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"silhloute97.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"silhloute97.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":"Sidebar Position.","copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="github太慢了我恨第一次首先就尝试了网上提及最多的方法，修改hosts中的配置。将所有需要的github相关的网站IP找到并且ping了延时最少的替换掉了hosts原有IP，然而不管怎么ping通网页依旧不会给你打开。  第二次再次网上找方法找到镜像网站，输入账号密码给我显示账号有问题没办法显示，吐了  第三次下定决心放弃github，选择普遍说很快的gitee，结果非企业用户根本无法创建项目">
@@ -280,6 +282,8 @@
 
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Liu Silhoutte"
+      src="/images/avatar.gif">
   <p class="site-author-name" itemprop="name">Liu Silhoutte</p>
   <div class="site-description" itemprop="description"></div>
 </div>
@@ -298,6 +302,11 @@
       </div>
   </nav>
 </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/%E9%82%A3%E9%82%A3%E9%82%A3%E6%9C%A8%E5%A1%94" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;那那那木塔" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+      </span>
+  </div>
 
 
 
@@ -380,5 +389,7 @@
 
   
 
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/love.js"></script>
 </body>
 </html>
