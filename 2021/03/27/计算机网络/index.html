@@ -30,7 +30,7 @@
 <meta property="og:description" content="计算机网络是互连自治的计算机集合 第一部分 分层结构层级结构： 物理层——进行比特传输  数据链路层——将网络层传下的数据报组装成帧 以太网：Ethernet、PPP 网络层——源主机到目的主机的数据分组路由与转发 IP、ICMP 传输层——进程-进程数据传输 TCP、UDP 应用层——支持各类网络应用 FTP、SMTP、HTTP OSI七层结构与TCP&#x2F;IP的五层结构的区别  网络层：前者面向连">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2021-03-27T09:05:04.000Z">
-<meta property="article:modified_time" content="2021-03-29T07:39:42.236Z">
+<meta property="article:modified_time" content="2021-04-09T04:09:28.653Z">
 <meta property="article:author" content="Liu Silhoutte">
 <meta property="article:tag" content="学习">
 <meta name="twitter:card" content="summary">
@@ -183,7 +183,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-03-29 15:39:42" itemprop="dateModified" datetime="2021-03-29T15:39:42+08:00">2021-03-29</time>
+                <time title="Modified: 2021-04-09 12:09:28" itemprop="dateModified" datetime="2021-04-09T12:09:28+08:00">2021-04-09</time>
               </span>
 
           
@@ -222,7 +222,7 @@
 </li>
 <li><p>数据交换方式</p>
 <ol>
-<li>电路交换</li>
+<li>电路交换**</li>
 <li>报文交换</li>
 <li>分组交换：数据报方式、虚电报方式—（流水线思想）</li>
 </ol>
@@ -235,8 +235,78 @@
 </ul>
 </li>
 <li><p>IP相关</p>
+<p>IP地址两部分：网络号与主机号，使用点分十进制</p>
+<p>两级子网掩码：网络号全为1，主机号全为0（三级子网掩码的子网号也全为0）。子网掩码与IP地址逐位相与就可以得到子网网络地址。</p>
 </li>
-<li></li>
+<li><p>ICMP：存在于IP数据报的数据部分，包含差错报文和询问报文。</p>
+</li>
+</ul>
+<h4 id="传输层（TCP、UDP）"><a href="#传输层（TCP、UDP）" class="headerlink" title="传输层（TCP、UDP）"></a>传输层（TCP、UDP）</h4><ul>
+<li><p>三次握手</p>
+<ol>
+<li><p>客户端发送连接请求报文段，无应用层数据。</p>
+<p><em>同步信号SYN=1, 发送第个数据节序号seq=x(随机)</em></p>
+</li>
+<li><p>服务器为该TCP连接分配缓存和变量，返回确认。</p>
+<p><em>SYN=1， ACK=1， seq=y(随机)， ack= x+1</em></p>
+</li>
+<li><p>客户端为TCP连接分配缓存和变量，返回确认确认。</p>
+<p><em>SYN=0， ACK=1， seq=x+1, ack=y+1</em></p>
+<p><strong>SYN洪泛攻击：服务器收不到第二次确认，挂起状态持续，需要SYN cookie解决</strong></p>
+</li>
+</ol>
+</li>
+<li><p>四次挥手</p>
+<ol>
+<li><p>客户端发送连接释放报文段，停止发送数据，主动关闭TCP连接。</p>
+<p><em>FIN=1， seq=u</em></p>
+</li>
+<li><p>服务端回送确认报文段 ——半关闭状态。</p>
+<p><em>ACK=1， seq=v, ack=u+1</em></p>
+</li>
+<li><p>服务端发送数据，发出连接释放报文段，关闭TCP连接。</p>
+<p><em>FIN=1， ACK=1， seq=w, ack=u+1(半关闭客户端未发送数据，所以期待的序号一样)</em></p>
+</li>
+<li><p>客户端回送一个确认报文段，等两个MSL（最长报文段寿命）后彻底关闭。</p>
+<p><em>ACK=1，seq=u+1, ack= w+1</em></p>
+</li>
+</ol>
+</li>
+<li><p>TCP可靠传输机制：校验+序号+确认+重传</p>
+<p>校验与UDP一样，加了伪首部，确认返回第一个报文段结束序号，依次累加</p>
+<p>重传时间：采用自适应算法，动态改变重传时间RTTS</p>
+<p>冗余ACK：比期望序号大的失序报文段到达时发送，指明下一个期待字节的序号</p>
+<p><strong>三个冗余ACK，重传——快速重传</strong></p>
+</li>
+<li><p>TCP流量控制</p>
+<p>滑动窗口机制：接收方设置确认报文段窗口字段将rwnd给发送方</p>
+<p>$ min(rwnd(接收窗口),cwnd(拥塞窗口)) $</p>
+<p><em>一方收到rwnd=0,TCP启动持续计时器，到期发送零窗口探测报文段，收方给出现在窗口值，如果还为0，就重设计时器</em></p>
+</li>
+<li><p>TCP拥塞控制：防止过多数据注入网络中（全局性）</p>
+<p>四种算法：慢开始、拥塞避免、快重传、快恢复</p>
+</li>
+</ul>
+<h4 id="网络层（https、万维网www）"><a href="#网络层（https、万维网www）" class="headerlink" title="网络层（https、万维网www）"></a>网络层（https、万维网www）</h4><ul>
+<li><p>www:大规模联机式的信息储藏所，是无数个网络站点和网页的几何</p>
+</li>
+<li><p>http:超文本传输协议</p>
+<ol>
+<li>浏览器分析URL</li>
+<li>向DNS请求解析IP地址</li>
+<li>DNS解析出IP地址</li>
+<li>浏览器与服务器建立TCP连接</li>
+<li>浏览器发出取文件命令</li>
+<li>服务器响应</li>
+<li>释放TCP连接</li>
+<li>浏览器显示</li>
+</ol>
+<h5 id="特点："><a href="#特点：" class="headerlink" title="特点："></a>特点：</h5><ol>
+<li>无状态：需要用cookie识别用户</li>
+<li>http采用TCP作为传输层协议，但其本身是无连接的</li>
+<li>http连接方式：持久连接与非持久连接，持久连接分为流水线和非流水线</li>
+</ol>
+</li>
 </ul>
 
     </div>
@@ -321,7 +391,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E6%98%AF%E4%BA%92%E8%BF%9E%E8%87%AA%E6%B2%BB%E7%9A%84%E8%AE%A1%E7%AE%97%E6%9C%BA%E9%9B%86%E5%90%88"><span class="nav-number">1.</span> <span class="nav-text">计算机网络是互连自治的计算机集合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E9%83%A8%E5%88%86-%E5%88%86%E5%B1%82%E7%BB%93%E6%9E%84"><span class="nav-number">2.</span> <span class="nav-text">第一部分 分层结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E9%83%A8%E5%88%86-%E9%87%8D%E7%82%B9%E5%B1%82"><span class="nav-number">3.</span> <span class="nav-text">第二部分 重点层</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E5%B1%82%EF%BC%88IP%E3%80%81ICMP%EF%BC%89"><span class="nav-number">3.1.</span> <span class="nav-text">网络层（IP、ICMP）</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E6%98%AF%E4%BA%92%E8%BF%9E%E8%87%AA%E6%B2%BB%E7%9A%84%E8%AE%A1%E7%AE%97%E6%9C%BA%E9%9B%86%E5%90%88"><span class="nav-number">1.</span> <span class="nav-text">计算机网络是互连自治的计算机集合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E9%83%A8%E5%88%86-%E5%88%86%E5%B1%82%E7%BB%93%E6%9E%84"><span class="nav-number">2.</span> <span class="nav-text">第一部分 分层结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E9%83%A8%E5%88%86-%E9%87%8D%E7%82%B9%E5%B1%82"><span class="nav-number">3.</span> <span class="nav-text">第二部分 重点层</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E5%B1%82%EF%BC%88IP%E3%80%81ICMP%EF%BC%89"><span class="nav-number">3.1.</span> <span class="nav-text">网络层（IP、ICMP）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BC%A0%E8%BE%93%E5%B1%82%EF%BC%88TCP%E3%80%81UDP%EF%BC%89"><span class="nav-number">3.2.</span> <span class="nav-text">传输层（TCP、UDP）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E5%B1%82%EF%BC%88https%E3%80%81%E4%B8%87%E7%BB%B4%E7%BD%91www%EF%BC%89"><span class="nav-number">3.3.</span> <span class="nav-text">网络层（https、万维网www）</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%89%B9%E7%82%B9%EF%BC%9A"><span class="nav-number">3.3.1.</span> <span class="nav-text">特点：</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -337,7 +407,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-count">6</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
