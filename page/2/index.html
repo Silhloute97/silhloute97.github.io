@@ -161,7 +161,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2021/08/11/js/" class="post-title-link" itemprop="url">js</a>
+            <a href="/2021/08/11/js/" class="post-title-link" itemprop="url">js-一-原型与原型链</a>
         </h2>
 
         <div class="post-meta">
@@ -173,6 +173,13 @@
 
               <time title="Created: 2021-08-11 15:21:11" itemprop="dateCreated datePublished" datetime="2021-08-11T15:21:11+08:00">2021-08-11</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-08-12 16:20:40" itemprop="dateModified" datetime="2021-08-12T16:20:40+08:00">2021-08-12</time>
+              </span>
 
           
 
@@ -185,7 +192,12 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          
+          <h3 id="原型属性"><a href="#原型属性" class="headerlink" title="原型属性"></a>原型属性</h3><ul>
+<li>对于任何函数来说，都有一个显式原型属性<code>prototype</code></li>
+<li>对于任何对象来说，都有一个隐式原型属性<code>__proto__</code><img src="C:/Users/11209/AppData/Roaming/Typora/typora-user-images/image-20210812161619131.png" alt="image-20210812161619131"></li>
+</ul>
+<p>可以看出，构造函数与实例间实际是没有直接关系的，二者由构造函数的原型对象联系，且由于原型对象也是对象，所以也有<code>__proto__</code>属性，指向上一级的原型对象，直达最后object的原型对象，并由null终止，形成一条原型链。</p>
+
       
     </div>
 
@@ -432,7 +444,7 @@
         </a>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-count">3</span>
         <span class="site-state-item-name">tags</span>
       </div>
   </nav>
