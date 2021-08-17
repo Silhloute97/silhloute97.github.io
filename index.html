@@ -302,10 +302,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2021-08-12 15:42:24 / Modified: 15:48:26" itemprop="dateCreated datePublished" datetime="2021-08-12T15:42:24+08:00">2021-08-12</time>
+              <time title="Created: 2021-08-12 15:42:24" itemprop="dateCreated datePublished" datetime="2021-08-12T15:42:24+08:00">2021-08-12</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-08-17 19:23:53" itemprop="dateModified" datetime="2021-08-17T19:23:53+08:00">2021-08-17</time>
+              </span>
 
           
 
@@ -325,21 +331,14 @@
 </li>
 <li><p>VM：ViewModel，表示vue实例</p>
 <p><code>data:&#123;&#125;</code>中的所有属性都会出现在vm也就是vue实例上，vm上的所有属性以及Vue原型上的所有属性在vue模板中可以直接使用。</p>
-</li>
-</ul>
-<h5 id="实现基础"><a href="#实现基础" class="headerlink" title="实现基础"></a>实现基础</h5><ul>
-<li><p>数据代理：</p>
-<ol>
-<li>通过vm对象来代理data对象中属性的操作</li>
-<li>更方便操作data中的数据</li>
-<li>通过Object.defineProperty()把data对象中所有属性加到vm上</li>
-</ol>
-<p>vue实现数据双向绑定主要是：采用数据劫持结合发布者-订阅者模式的方式，通过Object.defineProperty（）来劫持各个属性的setter，getter，在数据变动时发布消息给订阅者，触发相应监听回调。当把一个普通 Javascript 对象传给 Vue 实例来作为它的 data 选项时，Vue 将遍历它的属性，用 Object.defineProperty 将它们转为 getter/setter。用户看不到 getter/setter，但是在内部它们让 Vue 追踪依赖，在属性被访问和修改时通知变化。</p>
-<p>vue的数据双向绑定 将MVVM作为数据绑定的入口，整合Observer，Compile和Watcher三者，通过Observer来监听自己的model的数据变化，通过Compile来解析编译模板指令（vue中是用来解析 ），最终利用watcher搭起observer和Compile之间的通信桥梁，达到数据变化 —&gt;视图更新；视图交互变化（input）—&gt;数据model变更双向绑定效果</p>
-<hr>
-</li>
-</ul>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/08/12/vue-%E4%B8%80-MVVM%E6%A8%A1%E5%9E%8B/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
