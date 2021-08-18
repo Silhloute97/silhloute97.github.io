@@ -443,10 +443,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2021-08-12 15:40:30 / Modified: 15:48:39" itemprop="dateCreated datePublished" datetime="2021-08-12T15:40:30+08:00">2021-08-12</time>
+              <time title="Created: 2021-08-12 15:40:30" itemprop="dateCreated datePublished" datetime="2021-08-12T15:40:30+08:00">2021-08-12</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-08-18 08:08:09" itemprop="dateModified" datetime="2021-08-18T08:08:09+08:00">2021-08-18</time>
+              </span>
 
           
 
@@ -459,14 +465,18 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="Vue-五-——Vuex"><a href="#Vue-五-——Vuex" class="headerlink" title="Vue(五)——Vuex"></a>Vue(五)——Vuex</h1><p>Vuex 是一个专为 Vue.js 应用程序开发的状态管理模式。每一个 Vuex 应用的核心就是 store（仓库）。“store” 基本上就是一个容器，它包含着你的应用中大部分的状态 ( state )。</p>
-<p>在main.js引入store，注入。新建了一个目录store，….. export 。<br>场景有：单页应用中，组件之间的状态、音乐播放、登录状态、加入购物车</p>
-<p>state ： Vuex 使用单一状态树,即每个应用将仅仅包含一个store 实例，但单一状态树和模块化并不冲突。存放的数据状态，不可以直接修改里面的数据。</p>
-<p>mutations ： 修改Vuex 的 store 中的状态或数据。</p>
-<p>getters：类似vue的计算属性，主要用来过滤一些数据。</p>
-<p>action ：可以理解为通过将mutations里面处里数据的方法变成可异步的处理数据的方法，简单的说就是异步操作数据。view 层通过 store.dispath 来分发 action。</p>
-<p>modules：项目特别复杂的时候，可以让每一个模块拥有自己的state、mutation、action、getters,使得结构非常清晰，方便管理。</p>
-
+          <h1 id="Vue-五-——Vuex"><a href="#Vue-五-——Vuex" class="headerlink" title="Vue(五)——Vuex"></a>Vue(五)——Vuex</h1><ul>
+<li><p>Vuex 是一个专为 Vue.js 应用程序开发的状态管理模式。每一个 Vuex 应用的核心就是 store（仓库）。“store” 基本上就是一个容器，它包含着你的应用中大部分的状态 ( state )。</p>
+</li>
+<li><p>在main.js引入store，注入。新建了一个目录store，….. export 。<br>场景有：单页应用中，组件之间的状态、音乐播放、登录状态、加入购物车</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/08/12/vue-%E4%BA%94-Vuex/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -508,10 +518,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2021-08-12 15:40:09 / Modified: 15:48:52" itemprop="dateCreated datePublished" datetime="2021-08-12T15:40:09+08:00">2021-08-12</time>
+              <time title="Created: 2021-08-12 15:40:09" itemprop="dateCreated datePublished" datetime="2021-08-12T15:40:09+08:00">2021-08-12</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-08-18 08:08:37" itemprop="dateModified" datetime="2021-08-18T08:08:37+08:00">2021-08-18</time>
+              </span>
 
           
 
@@ -530,17 +546,14 @@
 <li><p>过程：创建——注册——使用</p>
 </li>
 <li><p>实现：data必须用函数式</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">//创建：</span><br><span class="line">const Name = Vue.extend(&#123;</span><br><span class="line">	template:`</span><br><span class="line">		<span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;root&quot;</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">h2</span>&gt;</span>姓名：&#123;&#123;Name&#125;&#125;<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">	`,</span><br><span class="line">	data()&#123;</span><br><span class="line">		return&#123;</span><br><span class="line">		Name:&#x27;--&#x27;,</span><br><span class="line">		xxx:&#x27;&#x27;,</span><br><span class="line">		...</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;)</span><br><span class="line">//注册：</span><br><span class="line">new Vue(&#123;</span><br><span class="line">	el:&#x27;#root&#x27;,</span><br><span class="line">	components:&#123;</span><br><span class="line">			Name:Name,//简写成Name,</span><br><span class="line">&#125;</span><br><span class="line">&#125;)</span><br><span class="line">//使用：</span><br><span class="line"><span class="tag">&lt;<span class="name">Name</span>&gt;</span><span class="tag">&lt;/<span class="name">Name</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
-<li><p>全局组件注册：<code>Vue.component(&#39;xx&#39;,xx)</code></p>
-</li>
-<li><p>组件内的this指向VueComponent实例对象而不是vm</p>
-</li>
-<li><p>有一个重要的内置关系：</p>
-<p><code>Vue.component.prototype.__proto__ === Vue.prototype</code></p>
-<hr>
-</li>
-</ul>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/08/12/vue-%E5%9B%9B-%E7%BB%84%E4%BB%B6/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -582,10 +595,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2021-08-12 15:39:45 / Modified: 15:49:17" itemprop="dateCreated datePublished" datetime="2021-08-12T15:39:45+08:00">2021-08-12</time>
+              <time title="Created: 2021-08-12 15:39:45" itemprop="dateCreated datePublished" datetime="2021-08-12T15:39:45+08:00">2021-08-12</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-08-18 08:02:51" itemprop="dateModified" datetime="2021-08-18T08:02:51+08:00">2021-08-18</time>
+              </span>
 
           
 
@@ -608,48 +627,14 @@
 <p>created（创建后） 完成数据观测，属性和方法的运算，初始化事件，el属性还没有显示出</p>
 </blockquote>
 <p>已完成数据监测数据代理的初始化工作，可以通过vm访问</p>
-</li>
-<li><blockquote>
-<p>beforeMount（载入前） 在挂载开始之前被调用</p>
-</blockquote>
-<p>相关的render函数首次被调用。实例已完成以下的配置：编译模板，把data里面的数据和模板生成html。注意此时还没有挂载html到页面上，编译的模板在内存中生成虚拟DOM，页面不能展示内容</p>
-</li>
-<li><blockquote>
-<p>mounted（载入后） 初始化结束</p>
-</blockquote>
-<p>在el 被新创建的 vm.$el 替换，并挂载到实例上去之后调用，即将内存中的虚拟DOM转换成真实DOM。实例已完成以下的配置：用上面编译好的html内容替换el属性指向的DOM对象。完成模板中的html渲染到html页面中。此过程中进行ajax交互。</p>
-</li>
-<li><blockquote>
-<p>beforeUpdate（更新前） 在数据更新之前调用</p>
-</blockquote>
-<p>发生在虚拟DOM重新渲染和打补丁之前。可以在该钩子中进一步地更改状态，不会触发附加的重渲染过程。</p>
-<p>新旧DOM进行比较，此时页面可能未同步</p>
-</li>
-<li><blockquote>
-<p>updated（更新后） 在由于数据更改导致的虚拟DOM重新渲染和打补丁之后调用。</p>
-</blockquote>
-<p>调用时，组件DOM已经更新，所以可以执行依赖于DOM的操作。然而在大多数情况下，应该避免在此期间更改状态，因为这可能会导致更新无限循环。该钩子在服务器端渲染期间不被调用。</p>
-</li>
-<li><blockquote>
-<p>beforeDestroy（销毁前） 在实例销毁之前调用。</p>
-</blockquote>
-<p>实例仍然完全可用，data、methods、指令都不再</p>
-</li>
-<li><blockquote>
-<p>destroyed（销毁后） 在实例销毁之后调用。</p>
-</blockquote>
-<p>调用后，所有的事件监听器会被移除，所有的子实例也会被销毁。该钩子在服务器端渲染期间不被调用。销毁后，vue开发者工具不会看到任何信息，自定义时间都会失效，但DOM原生事件仍然有效</p>
-</li>
-</ul>
-<p>1.什么是vue生命周期？</p>
-<p>答： Vue 实例从创建到销毁的过程，就是生命周期。从开始创建、初始化数据、编译模板、挂载Dom→渲染、更新→渲染、销毁等一系列过程，称之为 Vue 的生命周期。</p>
-<p>2.vue生命周期的作用是什么？</p>
-<p>答：它的生命周期中有多个事件钩子，让我们在控制整个Vue实例的过程时更容易形成好的逻辑。</p>
-<p>3.vue生命周期总共有几个阶段？<br>答：它可以总共分为8个阶段：创建前/后, 载入前/后,更新前/后,销毁前/销毁后。</p>
-<p>4.第一次页面加载会触发哪几个钩子？<br>答：会触发 下面这几个beforeCreate, created, beforeMount, mounted 。</p>
-<p>5.DOM 渲染在 哪个周期中就已经完成？<br>答：DOM 渲染在 mounted 中就已经完成了。</p>
-<hr>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/08/12/vue-%E4%B8%89-%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -691,10 +676,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2021-08-12 15:39:13 / Modified: 15:49:44" itemprop="dateCreated datePublished" datetime="2021-08-12T15:39:13+08:00">2021-08-12</time>
+              <time title="Created: 2021-08-12 15:39:13" itemprop="dateCreated datePublished" datetime="2021-08-12T15:39:13+08:00">2021-08-12</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-08-18 08:08:24" itemprop="dateModified" datetime="2021-08-18T08:08:24+08:00">2021-08-18</time>
+              </span>
 
           
 
@@ -710,32 +701,14 @@
           <h1 id="Vue-二-——属性"><a href="#Vue-二-——属性" class="headerlink" title="Vue(二)——属性"></a>Vue(二)——属性</h1><h3 id="事件处理"><a href="#事件处理" class="headerlink" title="事件处理"></a>事件处理</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">button</span> @<span class="attr">click</span>=<span class="string">&quot;showInfo&quot;</span>&gt;</span>显示消息<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"></span><br><span class="line">methods:&#123;</span><br><span class="line">	showInfo()&#123;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>methods 内的属性方法会出现在vm上，但与data不同的是不需要做数据代理，也就是不会配套getter/setter</p>
-<ul>
-<li><p>事件修饰符</p>
-<ol>
-<li><p>@click.prevent: 阻止默认行为</p>
-</li>
-<li><p>@click.stop: 阻止事件冒泡</p>
-</li>
-<li><p>@click.once:事件只触发一次</p>
-</li>
-</ol>
-</li>
-</ul>
-<p>###计算属性</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">computed:&#123;</span><br><span class="line">	fullName:&#123;</span><br><span class="line">		get()&#123;</span><br><span class="line">			return this.firstName+&#x27;-&#x27;+this.lastName</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="监视属性"><a href="#监视属性" class="headerlink" title="监视属性"></a>监视属性</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">watch:&#123;</span><br><span class="line">	isHot:&#123;</span><br><span class="line">		handler(newValue,oldValue)&#123;</span><br><span class="line">			console.log(&#39;......&#39;,newValue,oldValue)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>另一种写法：<code>vm.$watch</code></p>
-<ul>
-<li><p>使用new来调用watch配置，默认情况下不监测对象内部的改变，否则要修改<code>deep:true</code>，但是其实vue自身是可以监测的</p>
-<hr>
-</li>
-</ul>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/08/12/vue-%E4%BA%8C-%E5%B1%9E%E6%80%A7/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
