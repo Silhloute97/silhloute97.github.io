@@ -1227,7 +1227,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #dfffff;
+  background: #08c186;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -1546,6 +1546,8 @@ pre .javascript .function {
   font-family: 'Lato', "PingFang SC", "Microsoft YaHei", sans-serif;
   overflow-wrap: break-word;
   word-wrap: break-word;
+  padding-right: 25px;
+  padding-left: 25px;
 }
 @media (min-width: 1200px) {
   .post-body {
@@ -1801,6 +1803,7 @@ pre .javascript .function {
 }
 .posts-expand .post-header {
   font-size: 1.125em;
+  padding-top: 20px;
 }
 .posts-expand .post-title {
   font-size: 1.5em;
