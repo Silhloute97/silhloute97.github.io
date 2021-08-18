@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"silhloute97.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":"Sidebar Position.","copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="this的设计原因要理解this的设计，我们需要先了解Javascript中内存的数据结构； Javascript内置七种数据类型，可以分为基本数据类型和对象数据类型，在这里我们主要讲解一下对象数据类型在内存中的存储方式； 1var obj &#x3D; &amp;#123; name: &amp;#x27;Heternally&amp;#x27;&amp;#125;;  Javascript引擎在处理上面代码时，会在堆内存中，生成一个对">
+<meta property="og:type" content="article">
+<meta property="og:title" content="js(三)关于this的一切">
+<meta property="og:url" content="http://silhloute97.github.io/2021/08/18/js-%E4%B8%89-%E5%85%B3%E4%BA%8Ethis%E7%9A%84%E4%B8%80%E5%88%87/index.html">
+<meta property="og:site_name" content="Welcome to my cosmos!">
+<meta property="og:description" content="this的设计原因要理解this的设计，我们需要先了解Javascript中内存的数据结构； Javascript内置七种数据类型，可以分为基本数据类型和对象数据类型，在这里我们主要讲解一下对象数据类型在内存中的存储方式； 1var obj &#x3D; &amp;#123; name: &amp;#x27;Heternally&amp;#x27;&amp;#125;;  Javascript引擎在处理上面代码时，会在堆内存中，生成一个对">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-08-18T11:15:01.000Z">
+<meta property="article:modified_time" content="2021-08-18T11:21:07.658Z">
+<meta property="article:author" content="Liu Silhoutte">
+<meta property="article:tag" content="js">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://silhloute97.github.io/2021/08/18/js-%E4%B8%89-%E5%85%B3%E4%BA%8Ethis%E7%9A%84%E4%B8%80%E5%88%87/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>js(三)关于this的一切 | Welcome to my cosmos!</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Welcome to my cosmos!</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://silhloute97.github.io/2021/08/18/js-%E4%B8%89-%E5%85%B3%E4%BA%8Ethis%E7%9A%84%E4%B8%80%E5%88%87/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Liu Silhoutte">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Welcome to my cosmos!">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          js(三)关于this的一切
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-08-18 19:15:01 / Modified: 19:21:07" itemprop="dateCreated datePublished" datetime="2021-08-18T19:15:01+08:00">2021-08-18</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="this的设计原因"><a href="#this的设计原因" class="headerlink" title="this的设计原因"></a>this的设计原因</h2><p>要理解<code>this</code>的设计，我们需要先了解<code>Javascript</code>中内存的数据结构；</p>
+<p><code>Javascript</code>内置七种数据类型，可以分为<strong>基本数据类型</strong>和<strong>对象数据类型</strong>，在这里我们主要讲解一下<strong>对象数据类型</strong>在内存中的存储方式；</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = &#123; <span class="attr">name</span>: <span class="string">&#x27;Heternally&#x27;</span>&#125;;</span><br></pre></td></tr></table></figure>
+
+<p><code>Javascript</code>引擎在处理上面代码时，会在<strong>堆内存</strong>中，生成一个对象<code>&#123; name: &#39;Heternally&#39;&#125;</code>，然后把这个对象在内存中的地址赋值给变量<code>obj</code>。所以在读取<code>obj.name</code>时，需要先从变量<code>obj</code>拿到地址，然后再从对应地址中拿到对象，再返回它的<code>name</code>属性。</p>
+<span id="more"></span>
+
+<p>对象的属性可能是一个函数，当引擎遇到对象属性是函数的情况，会将函数单独保存在<strong>堆</strong>中，然后再将函数的地址赋值给对象属性；而<code>Javascript</code>是允许在函数体内引用当前环境的其他变量，那么问题来了，函数可以在不同的运行环境执行，所以我们就需要一种机制，能够在函数内获得当前运行环境，由此诞生了<code>this</code>，<strong>它的设计目的就是指向函数运行时所在的环境。</strong></p>
+<p>理解了<code>this</code>的设计，剩下的难点就是如何正确的判定它所指向的环境。</p>
+<hr>
+<p>##如何判定this的指向</p>
+<p>总结了<code>this</code>的绑定规则总共是有下面5种：</p>
+<ul>
+<li>1、默认绑定（严格/非严格模式）</li>
+<li>2、隐式绑定</li>
+<li>3、显式绑定</li>
+<li>4、new绑定</li>
+<li>5、ES6箭头函数绑定</li>
+</ul>
+<h3 id="1、默认绑定"><a href="#1、默认绑定" class="headerlink" title="1、默认绑定"></a><a target="_blank" rel="noopener" href="https://lucifer.ren/fe-interview/#/topics/js/this?id=_1%E3%80%81%E9%BB%98%E8%AE%A4%E7%BB%91%E5%AE%9A">1、默认绑定</a></h3><h4 id="1-1-严格模式"><a href="#1-1-严格模式" class="headerlink" title="1.1 严格模式"></a><a target="_blank" rel="noopener" href="https://lucifer.ren/fe-interview/#/topics/js/this?id=_11-%E4%B8%A5%E6%A0%BC%E6%A8%A1%E5%BC%8F">1.1 严格模式</a></h4><p>在严格模式下，不能将全局对象<code>window</code>作为默认绑定，此时<code>this</code>会绑定到<code>undefined</code>，但是在严格模式下调用函数则不会影响默认绑定。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function">() =&gt;</span> &#123;</span><br><span class="line"><span class="meta">  &quot;use strict&quot;</span></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">this</span>.name);</span><br><span class="line">  &#125;;</span><br><span class="line">  <span class="keyword">var</span> name = <span class="string">&quot;Heternally&quot;</span>;</span><br><span class="line">  foo(); </span><br><span class="line">&#125;)();</span><br><span class="line"></span><br><span class="line"><span class="comment">// Uncaught TypeError: Cannot read property &#x27;name&#x27; of undefined at fooCopy to clipboardErrorCopied</span></span><br><span class="line"><span class="keyword">var</span> name = <span class="string">&#x27;Heternally&#x27;</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">this</span>.name);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">(<span class="function">() =&gt;</span> &#123;</span><br><span class="line"><span class="meta">  &quot;use strict&quot;</span></span><br><span class="line">  foo();</span><br><span class="line">&#125;)();</span><br><span class="line"></span><br><span class="line"><span class="comment">// HeternallyCopy to clipboardErrorCopied</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="1-2-非严格模式"><a href="#1-2-非严格模式" class="headerlink" title="1.2 非严格模式"></a><a target="_blank" rel="noopener" href="https://lucifer.ren/fe-interview/#/topics/js/this?id=_12-%E9%9D%9E%E4%B8%A5%E6%A0%BC%E6%A8%A1%E5%BC%8F">1.2 非严格模式</a></h4><p>在非严格模式下，此时<code>this</code>就指向<strong>全局对象</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="string">&#x27;Heternally&#x27;</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">this</span>.name);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">foo(); <span class="comment">// HeternallyCopy to clipboardErrorCopied</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2、隐式绑定"><a href="#2、隐式绑定" class="headerlink" title="2、隐式绑定"></a><a target="_blank" rel="noopener" href="https://lucifer.ren/fe-interview/#/topics/js/this?id=_2%E3%80%81%E9%9A%90%E5%BC%8F%E7%BB%91%E5%AE%9A">2、隐式绑定</a></h3><p>当函数作为对象的属性存在，通过<strong>对象属性执行函数</strong>时，此时隐式绑定规则会将<code>this</code>绑定到对象上；</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="string">&#x27;Heternally&#x27;</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">this</span>.name);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">  name: <span class="string">&#x27;zl&#x27;</span>,</span><br><span class="line">  foo,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">obj.foo(); <span class="comment">// zlCopy to clipboardErrorCopied</span></span><br></pre></td></tr></table></figure>
+
+<p>注意上面代码中函数执行方式是通过<strong>对象属性</strong>执行</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="string">&#x27;Heternally&#x27;</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">this</span>.name);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">  name: <span class="string">&#x27;zl&#x27;</span>,</span><br><span class="line">  foo,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">foo(); <span class="comment">// Heternally</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> foo1 = obj.foo; </span><br><span class="line"></span><br><span class="line">foo1(); <span class="comment">// Heternally</span></span><br><span class="line"></span><br><span class="line">obj.foo(); <span class="comment">// zlCopy to clipboardErrorCopied</span></span><br></pre></td></tr></table></figure>
+
+<p>由上面代码可以发现，通过赋值操作后执行函数，会应用默认绑定，此时在非严格模式下<code>this</code>会指向全局对象。</p>
+<p>同样的，函数传参也是一种隐式赋值，此时在回调函数中会丢失<code>this</code>绑定。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">this</span>.name);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Foo</span>(<span class="params">fn</span>) </span>&#123;</span><br><span class="line">  fn();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">  name: <span class="string">&#x27;zl&#x27;</span>,</span><br><span class="line">  foo,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> name = <span class="string">&#x27;Heternally&#x27;</span>;</span><br><span class="line"></span><br><span class="line">Foo(obj.foo); <span class="comment">// HeternallyCopy to clipboardErrorCopied</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="3、显式绑定"><a href="#3、显式绑定" class="headerlink" title="3、显式绑定"></a><a target="_blank" rel="noopener" href="https://lucifer.ren/fe-interview/#/topics/js/this?id=_3%E3%80%81%E6%98%BE%E5%BC%8F%E7%BB%91%E5%AE%9A">3、显式绑定</a></h3><p><strong>通过 <code>call</code> <code>apply</code> <code>bind</code>绑定</strong></p>
+<p>相信同学们都知道这三个方法的作用，这边就主要拿<code>call</code>来举例；</p>
+<blockquote>
+<p>一句话介绍<code>call</code>：使用一个指定的<code>this</code>和若干个指定的参数调用某个函数或方法。</p>
+</blockquote>
+<p>在讲解<code>call</code>显示绑定之前，我们先想一下<code>call</code>做了哪些事儿。</p>
+<ul>
+<li>将函数设为对象的属性</li>
+<li>指定函数的this，并进行传参</li>
+<li>执行&amp;删除函数</li>
+<li>判定如果没有指定要绑定的this，非严格模式下默认指向全局对象</li>
+</ul>
+<p>可以看到值调用<code>call</code>方法后，会将<code>this</code>绑定到指定对象，所以称为<strong>显示绑定</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">this</span>.name);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">  name: <span class="string">&#x27;Heternally&#x27;</span>,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> obj1 = &#123;</span><br><span class="line">  name: <span class="string">&#x27;Heternally1&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> name = <span class="string">&#x27;zl&#x27;</span>;</span><br><span class="line"></span><br><span class="line">foo.call(obj); <span class="comment">// Heternally  调用call方法后强行将foo函数的this指向来obj对象上</span></span><br><span class="line"></span><br><span class="line">foo.call(obj).call(obj1); <span class="comment">// Heternally  多次调用call方法，以第一次为准</span></span><br><span class="line"></span><br><span class="line">foo.call(obj1).call(obj); <span class="comment">// Heternally1</span></span><br><span class="line"></span><br><span class="line">foo.call();<span class="comment">// zl 没有传入指定对象，所以this默认指向全局对象Copy to clipboardErrorCopied</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>如果call、apple、bind的绑定对象是null或者undefined，那么实际上在调用时这些值都会被忽略，所以使用的是默认绑定规则</p>
+</blockquote>
+<h3 id="4、通过new绑定"><a href="#4、通过new绑定" class="headerlink" title="4、通过new绑定"></a><a target="_blank" rel="noopener" href="https://lucifer.ren/fe-interview/#/topics/js/this?id=_4%E3%80%81%E9%80%9A%E8%BF%87new%E7%BB%91%E5%AE%9A">4、通过new绑定</a></h3><p>我们先看看构造函数在使用<code>new</code>后，执行了什么操作：</p>
+<ul>
+<li>它创建（构造）了一个全新的对象</li>
+<li>它会被执行[[Prototype]]（也就是__proto__）链接</li>
+<li>它使this指向新创建的对象</li>
+<li>通过new创建的每个对象将最终被[[Prototype]]链接到这个函数的prototype对象上</li>
+<li>如果函数没有返回对象类型Object(包含Functoin, Array, Date, RegExg, Error)，那么new表达式中的函数调用将返回该对象引用</li>
+</ul>
+<p>所以在使用<code>new</code>调用构造函数后，会构造一个新对象并将函数调用中的<code>this</code>绑定到新对象上。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="string">&#x27;zl&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params">name</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">this</span>.name = name;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> bar = &#123;</span><br><span class="line">  name: <span class="string">&#x27;object&#x27;</span>,</span><br><span class="line">  foo1: <span class="keyword">new</span> foo(<span class="string">&#x27;Heternally&#x27;</span>),</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(bar.foo1.name); <span class="comment">// HeternallyCopy to clipboardErrorCopied</span></span><br></pre></td></tr></table></figure>
+
+<p>构造函数是存在返回值的，可以将函数的返回值分成三种情况：</p>
+<ul>
+<li>返回一个对象</li>
+<li>没有返回值，即默认返回<code>undefined</code></li>
+<li>返回基本数据类型</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>、返回一个对象</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Foo</span>(<span class="params">name,age</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">this</span>.name = name;</span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    age</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> bar = <span class="keyword">new</span> Foo(<span class="string">&quot;Heternally&quot;</span>,<span class="string">&quot;18&quot;</span>);</span><br><span class="line"></span><br><span class="line">bar.name; <span class="comment">// undefined</span></span><br><span class="line"></span><br><span class="line">bar.age; <span class="comment">// 18</span></span><br><span class="line"></span><br><span class="line"><span class="number">2</span>、没有返回值</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Foo</span>(<span class="params">name,age</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">this</span>.name = name;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> bar = <span class="keyword">new</span> Foo(<span class="string">&quot;Heternally&quot;</span>,<span class="string">&quot;18&quot;</span>);</span><br><span class="line"></span><br><span class="line">bar.name; <span class="comment">// Heternally</span></span><br><span class="line"></span><br><span class="line">bar.age; <span class="comment">// undefined</span></span><br><span class="line"></span><br><span class="line"><span class="number">3</span>、返回基本数据类型</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Foo</span>(<span class="params">name,age</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">this</span>.name = name;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">123</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> bar = <span class="keyword">new</span> Foo(<span class="string">&quot;Heternally&quot;</span>,<span class="string">&quot;18&quot;</span>);</span><br><span class="line"></span><br><span class="line">bar.name; <span class="comment">// Heternally</span></span><br><span class="line"></span><br><span class="line">bar.age; <span class="comment">// undefinedCopy to clipboardErrorCopied</span></span><br></pre></td></tr></table></figure>
+
+<p>所以使用<code>new</code>绑定时，需要判断函数返回的值是否为一个对象，如果是对象，那么<code>this</code>会绑定到返回的对象上。</p>
+<h3 id="5、ES6箭头函数绑定"><a href="#5、ES6箭头函数绑定" class="headerlink" title="5、ES6箭头函数绑定"></a><a target="_blank" rel="noopener" href="https://lucifer.ren/fe-interview/#/topics/js/this?id=_5%E3%80%81es6%E7%AE%AD%E5%A4%B4%E5%87%BD%E6%95%B0%E7%BB%91%E5%AE%9A">5、ES6箭头函数绑定</a></h3><p>ES6新增了一种函数类型：箭头函数，箭头函数调用时无法使用上面四种规则了，它和普通函数最不同的一点就是对于箭头函数的<code>this</code>指向，是根据它外层（函数/全局）作用域来决定。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="function">(<span class="params">name</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">this</span>.name);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">  name: <span class="string">&#x27;Heternally&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> obj1 = &#123;</span><br><span class="line">  name: <span class="string">&#x27;text&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> name = <span class="string">&#x27;zl&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> foo1 = foo();</span><br><span class="line">foo1(); <span class="comment">// zl</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> foo2 = foo.call(obj);</span><br><span class="line">foo2(); <span class="comment">// Heternally</span></span><br><span class="line"></span><br><span class="line">foo2.call(obj1); <span class="comment">// Heternally 可以看到，箭头函数的`this`绑定后无法被修改</span></span><br><span class="line">Copy to clipboardErrorCopied</span><br></pre></td></tr></table></figure>
+
+<h3 id="6、规则优先级"><a href="#6、规则优先级" class="headerlink" title="6、规则优先级"></a><a target="_blank" rel="noopener" href="https://lucifer.ren/fe-interview/#/topics/js/this?id=_6%E3%80%81%E8%A7%84%E5%88%99%E4%BC%98%E5%85%88%E7%BA%A7">6、规则优先级</a></h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>、<span class="keyword">new</span>绑定</span><br><span class="line"><span class="keyword">var</span> obj = <span class="keyword">new</span> Foo();</span><br><span class="line"><span class="built_in">this</span>绑定新的对象上</span><br><span class="line"></span><br><span class="line"><span class="number">2</span>、显示绑定</span><br><span class="line"><span class="keyword">var</span> obj = foo.call(bar);</span><br><span class="line"><span class="built_in">this</span>绑定到指定对象上，若指定对象为<span class="literal">null</span>/<span class="literal">undefined</span>或着没传，则使用默认绑定规则</span><br><span class="line"></span><br><span class="line"><span class="number">3</span>、隐式绑定</span><br><span class="line"><span class="keyword">var</span> obj = bar.foo();</span><br><span class="line"><span class="built_in">this</span>绑定到调用方法的对象上</span><br><span class="line"></span><br><span class="line"><span class="number">4</span>、默认绑定</span><br><span class="line">foo();</span><br><span class="line"><span class="built_in">this</span>在严格模式下绑定到<span class="literal">undefined</span></span><br><span class="line">在非严格模式下绑定到全局对象</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/js/" rel="tag"># js</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/08/18/js-%E4%BA%8C-%E7%BB%A7%E6%89%BF/" rel="prev" title="js(二)继承">
+      <i class="fa fa-chevron-left"></i> js(二)继承
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#this%E7%9A%84%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%9B%A0"><span class="nav-text">this的设计原因</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81%E9%BB%98%E8%AE%A4%E7%BB%91%E5%AE%9A"><span class="nav-text">1、默认绑定</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-%E4%B8%A5%E6%A0%BC%E6%A8%A1%E5%BC%8F"><span class="nav-text">1.1 严格模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-%E9%9D%9E%E4%B8%A5%E6%A0%BC%E6%A8%A1%E5%BC%8F"><span class="nav-text">1.2 非严格模式</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81%E9%9A%90%E5%BC%8F%E7%BB%91%E5%AE%9A"><span class="nav-text">2、隐式绑定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%E3%80%81%E6%98%BE%E5%BC%8F%E7%BB%91%E5%AE%9A"><span class="nav-text">3、显式绑定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4%E3%80%81%E9%80%9A%E8%BF%87new%E7%BB%91%E5%AE%9A"><span class="nav-text">4、通过new绑定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5%E3%80%81ES6%E7%AE%AD%E5%A4%B4%E5%87%BD%E6%95%B0%E7%BB%91%E5%AE%9A"><span class="nav-text">5、ES6箭头函数绑定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6%E3%80%81%E8%A7%84%E5%88%99%E4%BC%98%E5%85%88%E7%BA%A7"><span class="nav-text">6、规则优先级</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Liu Silhoutte"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Liu Silhoutte</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/silhloute97" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;silhloute97" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/u/5391139886?is_all=1" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;5391139886?is_all&#x3D;1" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Liu Silhoutte</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/canvas_sphere.min.js"></script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/love.js"></script>
+
+
+<script type="text/javascript"
+color="0,0,255" opacity='0.8' zIndex="-2" count="99" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":"wanko","bottom":-30,"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
