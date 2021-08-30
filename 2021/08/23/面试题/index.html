@@ -22,15 +22,15 @@
     var CONFIG = {"hostname":"silhloute97.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":"Sidebar Position.","copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="汇川科技 深拷贝、浅拷贝  原型原型链  nodejs express实现了什么具体过程  项目实现与实现功能">
+  <meta name="description" content="深拷贝、浅拷贝  原型原型链  nodejs express实现了什么具体过程  项目实现与实现功能">
 <meta property="og:type" content="article">
 <meta property="og:title" content="面试题">
 <meta property="og:url" content="http://silhloute97.github.io/2021/08/23/%E9%9D%A2%E8%AF%95%E9%A2%98/index.html">
 <meta property="og:site_name" content="Welcome to my cosmos!">
-<meta property="og:description" content="汇川科技 深拷贝、浅拷贝  原型原型链  nodejs express实现了什么具体过程  项目实现与实现功能">
+<meta property="og:description" content="深拷贝、浅拷贝  原型原型链  nodejs express实现了什么具体过程  项目实现与实现功能">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2021-08-23T11:57:12.000Z">
-<meta property="article:modified_time" content="2021-08-25T07:20:59.023Z">
+<meta property="article:modified_time" content="2021-08-30T09:38:26.642Z">
 <meta property="article:author" content="Liu Silhoutte">
 <meta property="article:tag" content="面试">
 <meta name="twitter:card" content="summary">
@@ -193,7 +193,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-08-25 15:20:59" itemprop="dateModified" datetime="2021-08-25T15:20:59+08:00">2021-08-25</time>
+                <time title="Modified: 2021-08-30 17:38:26" itemprop="dateModified" datetime="2021-08-30T17:38:26+08:00">2021-08-30</time>
               </span>
 
           
@@ -207,7 +207,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h3 id="汇川科技"><a href="#汇川科技" class="headerlink" title="汇川科技"></a>汇川科技</h3><ol>
+        <ol>
 <li><p>深拷贝、浅拷贝</p>
 </li>
 <li><p>原型原型链</p>
@@ -216,15 +216,59 @@
 </li>
 <li><p>项目实现与实现功能</p>
 <span id="more"></span></li>
+<li><p>有成就感的事</p>
+</li>
+<li><p>力挽狂澜的经历</p>
+</li>
+<li><p>点击回顶部逻辑</p>
+</li>
+<li><p>点击元素展现内容的逻辑</p>
+</li>
+<li><p>数组去重</p>
+</li>
+<li><p>git提交步骤</p>
+</li>
+<li><p>域名解析相关</p>
+</li>
 </ol>
-<h3 id="阿里"><a href="#阿里" class="headerlink" title="阿里"></a>阿里</h3><ol>
-<li>有成就感的事</li>
-<li>力挽狂澜的经历</li>
-<li>点击回顶部逻辑</li>
-<li>点击元素展现内容的逻辑</li>
-<li>数组去重</li>
-<li>git提交步骤</li>
-<li>域名解析相关</li>
+<hr>
+<ol start="12">
+<li><p>settimeout、settimeinterval</p>
+</li>
+<li><p>回调嵌套解决办法</p>
+</li>
+<li><p>浏览器缓存</p>
+</li>
+<li><p>减少重绘优化方法</p>
+<ul>
+<li>重排与发生的条件：页面布局和几何属性改变时<ul>
+<li>添加和删除可视的dom元素</li>
+<li>元素位置改变</li>
+<li>元素尺寸改变：边距、填充、边框、宽高</li>
+<li>内容改变：文本改变或图片大小改变引起的计算值宽高改变</li>
+<li>页面渲染初始化（不可避免）</li>
+<li>浏览器窗口尺寸改变</li>
+<li>查询某些属性或调用某些方法：offsetTop、offsetHeight…</li>
+<li>激活css伪类：如hover</li>
+</ul>
+</li>
+<li>优化方法：<ul>
+<li>直接改变classname，如果动态改变样式，则使用csstxt</li>
+<li>让要操作的元素进行“离线处理”，处理完之后一起更新<ol>
+<li>使用DocumentFragment进行缓存操作，引发一次重排和重绘</li>
+<li>使用display:none技术，只引发两次重排和重绘</li>
+<li>使用cloneNode(true false)和replaceChild技术，引发一次重排和重绘</li>
+</ol>
+</li>
+<li>不要经常访问会引起浏览器flush队列的属性，如果一定要访问就利用缓存</li>
+<li>让元素脱离动画流，减少回流的render tree的规模</li>
+<li>将position设为absolute/fixed，不用考虑对其他元素的影响</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>v-if v-show区别</p>
+</li>
 </ol>
 
     </div>
@@ -306,7 +350,6 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B1%87%E5%B7%9D%E7%A7%91%E6%8A%80"><span class="nav-text">汇川科技</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%98%BF%E9%87%8C"><span class="nav-text">阿里</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
