@@ -31,7 +31,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.loli.net/2021/08/20/jAEUJsihTnpWNq2.png">
 <meta property="article:published_time" content="2021-08-11T07:21:27.000Z">
-<meta property="article:modified_time" content="2021-09-02T07:17:33.806Z">
+<meta property="article:modified_time" content="2021-09-02T07:48:34.970Z">
 <meta property="article:author" content="Liu Silhoutte">
 <meta property="article:tag" content="css">
 <meta name="twitter:card" content="summary">
@@ -195,7 +195,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-09-02 15:17:33" itemprop="dateModified" datetime="2021-09-02T15:17:33+08:00">2021-09-02</time>
+                <time title="Modified: 2021-09-02 15:48:34" itemprop="dateModified" datetime="2021-09-02T15:48:34+08:00">2021-09-02</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -385,7 +385,8 @@
 <p>rem布局: 转换成相对于根节点（HTML)字体大小</p>
 <p>em布局：转换成相对于父级字体大小</p>
 </blockquote>
-</li>
+<p>监听窗口尺寸</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">window</span>.οnresize=<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;  </span><br><span class="line"> $(<span class="built_in">window</span>).width();  </span><br><span class="line">&#125;  </span><br><span class="line"><span class="keyword">var</span> offsetWid = <span class="built_in">document</span>.documentElement.clientWidth;</span><br><span class="line"><span class="keyword">var</span> offsetHei = <span class="built_in">document</span>.documentElement.clientHeight;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="regexp">/(Android)/i</span>.test(navigator.userAgent))&#123;     <span class="comment">// 判断是否为Android手机</span></span><br><span class="line">	offsetWid = screen.width;</span><br><span class="line">	offsetHei = screen.height;</span><br><span class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span>(<span class="regexp">/(iPhone|iPad|iPod|iOS)/i</span>.test(navigator.userAgent))&#123;  <span class="comment">// 判断是否为苹果手机</span></span><br><span class="line">        offsetWid=<span class="built_in">document</span>.documentElement.clientWidth;</span><br><span class="line">        offsetHei=<span class="built_in">document</span>.documentElement.clientHeight;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></li>
 </ol>
 
     </div>
