@@ -157,6 +157,148 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://silhloute97.github.io/2021/09/06/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Liu Silhoutte">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Welcome to my cosmos!">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/09/06/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/" class="post-title-link" itemprop="url">网络安全</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-09-06 15:58:12 / Modified: 16:03:33" itemprop="dateCreated datePublished" datetime="2021-09-06T15:58:12+08:00">2021-09-06</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" itemprop="url" rel="index"><span itemprop="name">计算机网络</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>##xss(Cross Site Scripting)跨站脚本攻击</p>
+<p><strong>什么是 XSS ？</strong></p>
+<p>XSS (Cross Site Scripting)，即跨站脚本攻击，是一种常见于 Web 应用中的计算机安全漏洞。恶意攻击者往 Web 页面里嵌入恶意的客户端脚本，当用户浏览此网页时，脚本就会在用户的浏览器上执行，进而达到攻击者的目的。比如获取用户的 Cookie、导航到恶意网站、携带木马等。借助安全圈里面非常有名的一句话：</p>
+<blockquote>
+<p>所有的输入都是有害的。</p>
+</blockquote>
+<p>这句话把 XSS 漏洞的本质体现的淋漓尽致。大部分的 XSS 漏洞都是由于没有处理好用户的输入，导致恶意脚本在浏览器中执行。任何输入提交数据的地方都有可能存在 XSS。</p>
+<p><strong>XSS 常见攻击方法</strong></p>
+<p>1、绕过 XSS-Filter，利用 &lt;&gt; 标签注入 Html/JavaScript 代码；</p>
+<p>2、利用 HTML 标签的属性值进行 XSS 攻击。例如：<code>&lt;img src=“javascript:alert(‘xss’)”/&gt;</code>；（当然并不是所有的 Web 浏览器都支持 Javascript 伪协议，所以此类 XSS 攻击具有一定的局限性）</p>
+<p>3、空格、回车和 Tab。如果 XSS Filter 仅仅将敏感的输入字符列入黑名单，比如 javascript，用户可以利用空格、回车和 Tab 键来绕过过滤，例如：<code>&lt;img src=“javas cript:alert(/xss/);”/&gt;</code>；</p>
+<p>4、利用事件来执行跨站脚本。例如：<code>&lt;img src=“#” onerror= “alert(1)”/&gt;</code>，当 src 错误的视乎就会执行 onerror 事件；</p>
+<p>5、利用 CSS 跨站。例如：<code>body &#123;backgrund-image: url(“javascript:alert(‘xss’)”)&#125;</code>；</p>
+<p>6、扰乱过滤规则。例如：<code>&lt;IMG SRC=“javaSCript: alert(/xss/);”/&gt;</code>；</p>
+<p>7、利用字符编码，通过这种技巧，不仅能让 XSS 代码绕过服务端的过滤，还能更好地隐藏 Shellcode；（ JS 支持 unicode、eacapes、十六进制、十进制等编码形式）；</p>
+<p>8、拆分跨站法，将 XSS 攻击的代码拆分开来，适用于应用程序没有过滤 XSS 关键字符（如&lt;、&gt;）却对输入字符长度有限制的情况下；</p>
+<p>9、DOM 型的 XSS 主要是由客户端的脚本通过 DOM 动态地输出数据到页面上，它不依赖于提交数据到服务器，而是从客户端获得DOM中的数据在本地执行。容易导致 DOM 型的 XSS 的输入源包括：<code>Document.URL、Location(.pathname|.href|.search|.hash)、Document.referrer、Window.name、Document.cookie、localStorage/globalStorage</code>； </p>
+<p><strong>XSS 如何防御？</strong></p>
+<p>从上面的介绍可知，XSS 漏洞是由于对用户提交的数据没有经过严格的过滤处理造成的，所以防御的原则就是不相信用户输入的数据，对输入进行过滤，对输出进行编码。</p>
+<p>1、使用 XSS Filter</p>
+<p>针对用户提交的数据进行有效的验证，只接受我们规定的长度或内容的提交，过滤掉其他的输入内容。比如：</p>
+<ul>
+<li>表单数据指定值的类型：年龄只能是 int 、name 只能是字母数字等。</li>
+<li>过滤或移除特殊的 html 标签：<code>&lt;script&gt;</code>、<code>&lt;iframe&gt;</code>等。</li>
+<li>过滤 js 事件的标签：<code>onclick</code>、<code>onerror</code>、<code>onfocus</code>等。</li>
+</ul>
+<p>2、html 实体</p>
+<p>当需要往 HTML 标签之间插入不可信数据的时候，首先要做的就是<strong>对不可信数据进行 HTML Entity 编码</strong>，在 html 中有些字符对于 HTML 来说是具有特殊意义的，所以这些特殊字符不允许在文本中直接使用，需要使用实体字符。 html 实体的存在是导致 XSS 漏洞的主要愿意之一，因此我们需要将实体转化为相应的实体编号。</p>
+<table>
+<thead>
+<tr>
+<th>显示结果</th>
+<th>描述</th>
+<th>实体编号</th>
+</tr>
+</thead>
+<tbody><tr>
+<td></td>
+<td>空格</td>
+<td>&amp;nbsp ;</td>
+</tr>
+<tr>
+<td>&lt;</td>
+<td>小于</td>
+<td>&amp;lt ;</td>
+</tr>
+<tr>
+<td>&gt;</td>
+<td>大于</td>
+<td>&amp;gt ;</td>
+</tr>
+<tr>
+<td>&amp;</td>
+<td>和</td>
+<td>&amp;amp ;</td>
+</tr>
+<tr>
+<td>‘’</td>
+<td>引号</td>
+<td>&amp;quot ;</td>
+</tr>
+</tbody></table>
+<p>3、JavaScript编码</p>
+<p>这条原则主要针对动态生成的JavaScript代码，这包括脚本部分以及HTML标签的事件处理属性（如onerror, onload等）。在往JavaScript代码里插入数据的时候，只有一种情况是安全的，那就是<strong>对不可信数据进行JavaScript编码</strong>，并且只把这些数据放到使用引号包围起来的值部分（data value）之中，除了上面的那些转义之外，还要附加上下面的转义：<br><code>\</code> 转成 <code>\\</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#96; 转成 &#96;\&#x2F;</span><br></pre></td></tr></table></figure>
+
+<p><code>;</code> 转成 <code>；</code>(全角;)</p>
+<p>注意：在对不可信数据做编码的时候，不能图方便使用反斜杠<code>\</code> 对特殊字符进行简单转义，比如将双引号 <code>”</code>转义成 <code>\”</code>，这样做是不可靠的，因为浏览器在对页面做解析的时候，会先进行HTML解析，然后才是JavaScript解析，所以双引号很可能会被当做HTML字符进行HTML解析，这时双引号就可以突破代码的值部分，使得攻击者可以继续进行XSS攻击；另外，输出的变量的时候，变量值必须在引号内部，避免安全问题；更加严格的方式，对除了数字和字母以外的所有字符，使用十六进制\xhh 的方式进行编码。</p>
+<p>4、Http Only cookie</p>
+<p>许多 XSS 攻击的目的就是为了获取用户的 cookie，<strong>将重要的 cookie 标记为 http only</strong>，这样的话当浏览器向服务端发起请求时就会带上 cookie 字段，但是在脚本中却不能访问 cookie，这样就避免了 XSS 攻击利用 js 的 <code>document.cookie</code>获取 cookie</p>
+<hr>
+<p>##CSRF(Cross-site request forgery)跨站请求伪造</p>
+<p><strong>什么是csrf</strong></p>
+<hr>
+<p>##SSRF(服务器请求伪造)</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://silhloute97.github.io/2021/09/04/js-%E5%85%AD-%E5%B8%B8%E7%94%A8%E8%BF%AD%E4%BB%A3%E5%87%BD%E6%95%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -437,7 +579,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-09-02 15:18:27" itemprop="dateModified" datetime="2021-09-02T15:18:27+08:00">2021-09-02</time>
+                <time title="Modified: 2021-09-06 15:57:59" itemprop="dateModified" datetime="2021-09-06T15:57:59+08:00">2021-09-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -910,91 +1052,6 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2021/08/17/vscode%E5%88%9B%E5%BB%BAvue%E9%A1%B9%E7%9B%AE-%E4%BA%8C/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://silhloute97.github.io/2021/08/17/vscode%E5%88%9B%E5%BB%BAvue%E9%A1%B9%E7%9B%AE-%E4%B8%80/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Liu Silhoutte">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Welcome to my cosmos!">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/08/17/vscode%E5%88%9B%E5%BB%BAvue%E9%A1%B9%E7%9B%AE-%E4%B8%80/" class="post-title-link" itemprop="url">vscode创建vue项目(一)</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-08-17 15:49:46" itemprop="dateCreated datePublished" datetime="2021-08-17T15:49:46+08:00">2021-08-17</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-09-02 15:19:22" itemprop="dateModified" datetime="2021-09-02T15:19:22+08:00">2021-09-02</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Vue/" itemprop="url" rel="index"><span itemprop="name">Vue</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h1><ul>
-<li><p>安装node.js，官网下载即可，安装路径记得先选好最好不在C盘，否则后期再改位置非常麻烦，血泪教训</p>
-</li>
-<li><p>在cmd中输入node -v 和npm -v 均显示即安装成功</p>
-<p><img src="https://i.loli.net/2021/08/17/Dg5FxbZ9RlApL6V.png" alt="img"></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/08/17/vscode%E5%88%9B%E5%BB%BAvue%E9%A1%B9%E7%9B%AE-%E4%B8%80/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
